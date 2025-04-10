@@ -41,7 +41,7 @@ if (isset($_POST['proses'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
-    <title>Login - POS Codekop</title>
+    <title>Login - POS Java Mart</title>
     <!-- Custom fonts for this template-->
     <link href="vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -62,7 +62,7 @@ if (isset($_POST['proses'])) {
                         <!-- Nested Row within Card Body -->
 						<div class="p-5">
 							<div class="text-center">
-								<h4 class="h4 text-gray-900 mb-4"><b>Login POS Codekop</b></h4>
+								<h4 class="h4 text-gray-900 mb-4"><b>Login POS Java Mart</b></h4>
 							</div>
 							<form class="form-login" method="POST">
 								<div class="form-group">

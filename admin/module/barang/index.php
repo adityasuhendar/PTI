@@ -47,6 +47,7 @@
                         <tr style="background:#DFF0D8;color:#333;">
                             <th>No.</th>
                             <th>ID Barang</th>
+                            <th>Barcode</th>
                             <th>Kategori</th>
                             <th>Nama Barang</th>
                             <th>Merk</th>
@@ -75,6 +76,7 @@
                         <tr>
                             <td><?php echo $no;?></td>
                             <td><?php echo $isi['id_barang'];?></td>
+                            <td><?php echo $isi['barcode'];?></td>
                             <td><?php echo $isi['nama_kategori'];?></td>
                             <td><?php echo $isi['nama_barang'];?></td>
                             <td><?php echo $isi['merk'];?></td>
@@ -151,6 +153,21 @@
 									$format = $lihat -> barang_id();
 								?>
                                 <tr>
+                                    <td>Barcode</td>
+                                    <td>
+                                        <select id="barcode_option" class="form-control" required>
+                                            <option value="">-- Pilih Opsi --</option>
+                                            <option value="ada">Sudah Ada Barcode</option>
+                                            <option value="generate">Generate Otomatis</option>
+                                        </select>
+                                        <br />
+                                        <input type="text" id="barcode_input" class="form-control" placeholder="Scan / Masukkan Barcode" style="display: none;">
+                                        <input type="hidden" name="barcode" id="barcode_hidden"> <!-- INI penting -->
+                                    </td>
+                                </tr>
+
+
+                                <tr>
                                     <td>ID Barang</td>
                                     <td><input type="text" readonly="readonly" required value="<?php echo $format;?>"
                                             class="form-control" name="id"></td>
@@ -218,3 +235,35 @@
             </div>
 
         </div>
+
+        <script>
+        document.getElementById('barcode_option').addEventListener('change', function () {
+            const input = document.getElementById('barcode_input');
+            const hidden = document.getElementById('barcode_hidden');
+            
+            if (this.value === 'ada') {
+                input.style.display = 'block';
+                input.required = true;
+                input.readOnly = false;
+                input.value = '';
+                hidden.value = '';
+                
+                input.addEventListener('input', function () {
+                    hidden.value = this.value;
+                });
+            } else if (this.value === 'generate') {
+                const generated = 'BC' + Date.now();
+                input.style.display = 'block';
+                input.required = true;
+                input.readOnly = true;
+                input.value = generated;
+                hidden.value = generated;
+            } else {
+                input.style.display = 'none';
+                input.required = false;
+                input.value = '';
+                hidden.value = '';
+            }
+        });
+</script>
+

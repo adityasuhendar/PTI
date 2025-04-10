@@ -1,21 +1,29 @@
 <?php
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
+use Picqer\Barcode\BarcodeGeneratorPNG;
 
 session_start();
 if (!empty($_SESSION['admin'])) {
     require '../../config.php';
     if (!empty($_GET['kategori'])) {
-        $nama= htmlentities(htmlentities($_POST['kategori']));
-        $tgl= date("j F Y, G:i");
+        $nama = htmlentities($_POST['kategori']);
+        $tgl = date("j F Y, G:i");
         $data[] = $nama;
         $data[] = $tgl;
         $sql = 'INSERT INTO kategori (nama_kategori,tgl_input) VALUES(?,?)';
-        $row = $config -> prepare($sql);
-        $row -> execute($data);
+        $row = $config->prepare($sql);
+        $row->execute($data);
         echo '<script>window.location="../../index.php?page=kategori&&success=tambah-data"</script>';
     }
 
     if (!empty($_GET['barang'])) {
+        require '../../assets/barcode/BarcodeGenerator.php';
+        require '../../assets/barcode/BarcodeGeneratorPNG.php';
+
         $id = htmlentities($_POST['id']);
+        $barcode = htmlentities($_POST['barcode']);
         $kategori = htmlentities($_POST['kategori']);
         $nama = htmlentities($_POST['nama']);
         $merk = htmlentities($_POST['merk']);
@@ -25,7 +33,27 @@ if (!empty($_SESSION['admin'])) {
         $stok = htmlentities($_POST['stok']);
         $tgl = htmlentities($_POST['tgl']);
 
+        // Membuat generator barcode PNG
+        $generator = new BarcodeGeneratorPNG();
+
+        // Menggunakan ID barang sebagai barcode
+        $barcode = $id;  // Kamu bisa ganti dengan ID atau string lain untuk barcode
+
+        // Tentukan tipe barcode (misalnya TYPE_CODE_128)
+        $type = $generator::TYPE_CODE_128;
+
+        // Membuat barcode PNG berdasarkan tipe dan ID barang
+        $barcodeImage = $generator->getBarcode($barcode, $type);
+
+        // Tentukan path untuk menyimpan gambar barcode
+        $barcodeImagePath = '../../assets/barcode_images/'.$barcode.'.png';
+
+        // Menyimpan gambar barcode ke server
+        file_put_contents($barcodeImagePath, $barcodeImage);
+
+        // Menyimpan data barang ke database, hanya menyimpan path gambar barcode
         $data[] = $id;
+        $data[] = $barcode;
         $data[] = $kategori;
         $data[] = $nama;
         $data[] = $merk;
@@ -34,13 +62,16 @@ if (!empty($_SESSION['admin'])) {
         $data[] = $satuan;
         $data[] = $stok;
         $data[] = $tgl;
-        $sql = 'INSERT INTO barang (id_barang,id_kategori,nama_barang,merk,harga_beli,harga_jual,satuan_barang,stok,tgl_input) 
-			    VALUES (?,?,?,?,?,?,?,?,?) ';
+        $data[] = $barcodeImagePath; // Menyimpan path gambar barcode di database
+
+        $sql = 'INSERT INTO barang (id_barang,barcode,id_kategori,nama_barang,merk,harga_beli,harga_jual,satuan_barang,stok,tgl_input,barcode_image_path) 
+                VALUES (?,?,?,?,?,?,?,?,?,?,?)';
         $row = $config -> prepare($sql);
         $row -> execute($data);
+
         echo '<script>window.location="../../index.php?page=barang&success=tambah-data"</script>';
     }
-    
+
     if (!empty($_GET['jual'])) {
         $id = $_GET['id'];
 
@@ -68,8 +99,9 @@ if (!empty($_SESSION['admin'])) {
 
             echo '<script>window.location="../../index.php?page=jual&success=tambah-data"</script>';
         } else {
-            echo '<script>alert("Stok Barang Anda Telah Habis !");
-					window.location="../../index.php?page=jual#keranjang"</script>';
+            echo '<script>alert("Stok Barang Anda Telah Habis !"); 
+                    window.location="../../index.php?page=jual#keranjang"</script>';
         }
     }
 }
+?>
