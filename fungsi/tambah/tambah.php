@@ -1,8 +1,8 @@
 <?php
+require '../../vendor/autoload.php';
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-
-use Picqer\Barcode\BarcodeGeneratorPNG;
+// use Picqer\Barcode\BarcodeGeneratorJPG;
 
 session_start();
 if (!empty($_SESSION['admin'])) {
@@ -19,8 +19,8 @@ if (!empty($_SESSION['admin'])) {
     }
 
     if (!empty($_GET['barang'])) {
-        require '../../assets/barcode/BarcodeGenerator.php';
-        require '../../assets/barcode/BarcodeGeneratorPNG.php';
+        // require_once '../../assets/barcode/BarcodeGenerator.php';
+        // require_once '../../assets/barcode/BarcodeGeneratorJPG.php';        
 
         $id = htmlentities($_POST['id']);
         $barcode = htmlentities($_POST['barcode']);
@@ -33,24 +33,28 @@ if (!empty($_SESSION['admin'])) {
         $stok = htmlentities($_POST['stok']);
         $tgl = htmlentities($_POST['tgl']);
 
-        // Membuat generator barcode PNG
-        $generator = new BarcodeGeneratorPNG();
+        // Membuat generator barcode JPG
+        // $generator = new BarcodeGeneratorJPG();
 
-        // Menggunakan ID barang sebagai barcode
-        $barcode = $id;  // Kamu bisa ganti dengan ID atau string lain untuk barcode
+        // // Menggunakan ID barang sebagai barcode
+        // $barcode = $id;  // Kamu bisa ganti dengan ID atau string lain untuk barcode
 
-        // Tentukan tipe barcode (misalnya TYPE_CODE_128)
-        $type = $generator::TYPE_CODE_128;
+        // // Tentukan tipe barcode (misalnya TYPE_CODE_128)
+        // $type = $generator::TYPE_CODABAR;
 
-        // Membuat barcode PNG berdasarkan tipe dan ID barang
-        $barcodeImage = $generator->getBarcode($barcode, $type);
+        // // Membuat barcode JPG berdasarkan tipe dan ID barang
+        // $barcodeImage = $generator->getBarcode($barcode, $type);
 
-        // Tentukan path untuk menyimpan gambar barcode
-        $barcodeImagePath = '../../assets/barcode_images/'.$barcode.'.png';
-
-        // Menyimpan gambar barcode ke server
-        file_put_contents($barcodeImagePath, $barcodeImage);
-
+        // // Tentukan path untuk menyimpan gambar barcode
+        
+        // // Menyimpan gambar barcode ke server
+        // file_put_contents($barcodeImagePath, $barcodeImage);
+        
+        $generator = (new Picqer\Barcode\Types\TypeCodabar())->getBarcode($barcode);
+        $renderer = new Picqer\Barcode\Renderers\JpgRenderer();
+        
+        $barcodeImagePath = '../../assets/barcode_images/'.$barcode.'.jpg';
+        file_put_contents($barcodeImagePath, $renderer->render($generator, $generator->getWidth() * 2));
         // Menyimpan data barang ke database, hanya menyimpan path gambar barcode
         $data[] = $id;
         $data[] = $barcode;
