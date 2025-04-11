@@ -165,9 +165,16 @@
 								<tr>
 									<td>Total Semua  </td>
 									<td><input type="text" class="form-control" name="total" value="<?php echo $total_bayar;?>"></td>
-								
+									
 									<td>Bayar  </td>
-									<td><input type="text" class="form-control" name="bayar" value="<?php echo $bayar;?>"></td>
+									<td>
+										<!-- Input untuk menampilkan format Rupiah -->
+										<input type="text" id="bayarFormatted" class="form-control" value="<?php echo $bayar;?>">
+										
+										<!-- Input tersembunyi untuk menyimpan nilai asli -->
+										<input type="hidden" id="bayarRaw" name="bayar" value="<?php echo $bayar;?>">
+									</td>
+
 									<td><button class="btn btn-success"><i class="fa fa-shopping-cart"></i> Bayar</button>
 									<?php  if(!empty($_GET['nota'] == 'yes')) {?>
 										<a class="btn btn-danger" href="fungsi/hapus/hapus.php?penjualan=jual">
@@ -199,6 +206,30 @@
 
 <script>
 // AJAX call for autocomplete 
+
+// Fungsi untuk format angka menjadi format rupiah
+// Fungsi untuk format angka menjadi format rupiah
+function formatRupiah(angka) {
+    var reverse = angka.toString().split('').reverse().join('');
+    var ribuan = reverse.match(/\d{1,3}/g);
+    ribuan = ribuan.join('.').split('').reverse().join('');
+    return 'Rp. ' + ribuan;
+}
+
+// Fungsi untuk mengupdate nilai bayar dengan format rupiah
+document.querySelector('#bayarFormatted').addEventListener('input', function(e) {
+    // Ambil nilai input tanpa format (angka murni)
+    var rawValue = e.target.value.replace(/[^\d]/g, '');  // Menghapus semua karakter non-digit
+    
+    // Update nilai pada input tersembunyi (yang akan dikirim ke server)
+    document.querySelector('#bayarRaw').value = rawValue;
+    
+    // Terapkan format rupiah pada input yang terlihat
+    e.target.value = formatRupiah(rawValue);
+});
+
+
+
 $(document).ready(function(){
 	$("#cari").change(function(){
 		$.ajax({

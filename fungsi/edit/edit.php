@@ -200,7 +200,7 @@ if (!empty($_SESSION['admin'])) {
         } else {
             $sql = "select barang.*, kategori.id_kategori, kategori.nama_kategori
 					from barang inner join kategori on barang.id_kategori = kategori.id_kategori
-					where barang.id_barang like '%$cari%' or barang.nama_barang like '%$cari%' or barang.merk like '%$cari%'";
+					where barang.id_barang like '%$cari%' or barang.nama_barang like '%$cari%' or barang.merk like '%$cari%' or barang.barcode like '%$cari%'";
             $row = $config -> prepare($sql);
             $row -> execute();
             $hasil1= $row -> fetchAll();

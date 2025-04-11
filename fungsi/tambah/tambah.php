@@ -1,5 +1,6 @@
 <?php
 require '../../vendor/autoload.php';
+
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 // use Picqer\Barcode\BarcodeGeneratorJPG;
@@ -19,6 +20,7 @@ if (!empty($_SESSION['admin'])) {
     }
 
     if (!empty($_GET['barang'])) {
+        $barcode_option  = htmlentities($_POST['barcode_option']);
         // require_once '../../assets/barcode/BarcodeGenerator.php';
         // require_once '../../assets/barcode/BarcodeGeneratorJPG.php';        
 
@@ -32,7 +34,7 @@ if (!empty($_SESSION['admin'])) {
         $satuan = htmlentities($_POST['satuan']);
         $stok = htmlentities($_POST['stok']);
         $tgl = htmlentities($_POST['tgl']);
-
+        $barcodeImagePath = ''; // Variabel untuk menyimpan path gambar barcode
         // Membuat generator barcode JPG
         // $generator = new BarcodeGeneratorJPG();
 
@@ -49,12 +51,13 @@ if (!empty($_SESSION['admin'])) {
         
         // // Menyimpan gambar barcode ke server
         // file_put_contents($barcodeImagePath, $barcodeImage);
-        
-        $generator = (new Picqer\Barcode\Types\TypeCodabar())->getBarcode($barcode);
-        $renderer = new Picqer\Barcode\Renderers\JpgRenderer();
-        
-        $barcodeImagePath = '../../assets/barcode_images/'.$barcode.'.jpg';
-        file_put_contents($barcodeImagePath, $renderer->render($generator, $generator->getWidth() * 2));
+        if ($barcode_option == 'generate'){
+            $generator = (new Picqer\Barcode\Types\TypeCodabar())->getBarcode($barcode);
+            $renderer = new Picqer\Barcode\Renderers\JpgRenderer();
+            
+            $barcodeImagePath = $barcode.'.jpg';
+            file_put_contents('../../assets/barcode_images/'.$barcodeImagePath, $renderer->render($generator, $generator->getWidth() * 2));
+        }
         // Menyimpan data barang ke database, hanya menyimpan path gambar barcode
         $data[] = $id;
         $data[] = $barcode;

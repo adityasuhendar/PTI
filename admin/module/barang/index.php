@@ -92,27 +92,36 @@
                             <td> <?php echo $isi['satuan_barang'];?></td>
                             <td>
                                 <?php if($isi['stok'] <=  '3'){?>
-                                <form method="POST" action="fungsi/edit/edit.php?stok=edit">
-                                    <input type="text" name="restok" class="form-control">
-                                    <input type="hidden" name="id" value="<?php echo $isi['id_barang'];?>"
-                                        class="form-control">
-                                    <button class="btn btn-primary btn-sm">
-                                        Restok
-                                    </button>
-                                    <a href="fungsi/hapus/hapus.php?barang=hapus&id=<?php echo $isi['id_barang'];?>"
-                                        onclick="javascript:return confirm('Hapus Data barang ?');">
-                                        <button class="btn btn-danger btn-sm">Hapus</button></a>
-                                </form>
+                                    <form method="POST" action="fungsi/edit/edit.php?stok=edit">
+                                        <input type="text" name="restok" class="form-control">
+                                        <input type="hidden" name="id" value="<?php echo $isi['id_barang'];?>" class="form-control">
+                                        <button class="btn btn-primary btn-sm">Restok</button>
+                                        <a href="fungsi/hapus/hapus.php?barang=hapus&id=<?php echo $isi['id_barang'];?>" onclick="javascript:return confirm('Hapus Data barang ?');">
+                                            <button class="btn btn-danger btn-sm">Hapus</button>
+                                        </a>
+                                    </form>
                                 <?php }else{?>
-                                <a href="index.php?page=barang/details&barang=<?php echo $isi['id_barang'];?>"><button
-                                        class="btn btn-primary btn-xs">Details</button></a>
+                                    <a href="index.php?page=barang/details&barang=<?php echo $isi['id_barang'];?>">
+                                        <button class="btn btn-primary btn-xs">Details</button>
+                                    </a>
 
-                                <a href="index.php?page=barang/edit&barang=<?php echo $isi['id_barang'];?>"><button
-                                        class="btn btn-warning btn-xs">Edit</button></a>
-                                <a href="fungsi/hapus/hapus.php?barang=hapus&id=<?php echo $isi['id_barang'];?>"
-                                    onclick="javascript:return confirm('Hapus Data barang ?');"><button
-                                        class="btn btn-danger btn-xs">Hapus</button></a>
+                                    <a href="index.php?page=barang/edit&barang=<?php echo $isi['id_barang'];?>">
+                                        <button class="btn btn-warning btn-xs">Edit</button>
+                                    </a>
+
+                                    <a href="fungsi/hapus/hapus.php?barang=hapus&id=<?php echo $isi['id_barang'];?>" onclick="javascript:return confirm('Hapus Data barang ?');">
+                                        <button class="btn btn-danger btn-xs">Hapus</button>
+                                    </a>
+
+                                    <!-- Tombol Download Barcode -->
+                                    <?php if(!empty($isi['barcode_image_path'])) { ?>
+                                        <!-- sesuaikan saat hosting -->
+                                        <a href="http://localhost/pos-kasir-php-master/assets/barcode_images/<?php echo $isi['barcode_image_path']; ?>" download="<?php echo basename($isi['barcode_image_path']); ?>">
+                                            <button class="btn btn-success btn-xs">Download</button>
+                                        </a>
+                                    <?php } ?>
                                 <?php }?>
+                            </td>
                         </tr>
                         <?php 
 							$no++; 
@@ -155,7 +164,7 @@
                                 <tr>
                                     <td>Barcode</td>
                                     <td>
-                                        <select id="barcode_option" class="form-control" required>
+                                        <select name='barcode_option' id="barcode_option" class="form-control" required>
                                             <option value="">-- Pilih Opsi --</option>
                                             <option value="ada">Sudah Ada Barcode</option>
                                             <option value="generate">Generate Otomatis</option>
