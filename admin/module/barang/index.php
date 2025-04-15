@@ -133,7 +133,7 @@
                     </tbody>
                     <tfoot>
                         <tr>
-                            <th colspan="5">Total </td>
+                            <th colspan="6">Total </td>
                             <th><?php echo $totalStok;?></td>
                             <th>Rp.<?php echo number_format($totalBeli);?>,-</td>
                             <th>Rp.<?php echo number_format($totalJual);?>,-</td>
@@ -261,7 +261,7 @@
                     hidden.value = this.value;
                 });
             } else if (this.value === 'generate') {
-                const generated = 'BC' + Date.now();
+                const generated = Date.now();
                 input.style.display = 'block';
                 input.required = true;
                 input.readOnly = true;
