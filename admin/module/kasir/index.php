@@ -56,7 +56,7 @@ if (isset($_GET['hapus'])) {
     // Hapus member
     $config->prepare("DELETE FROM member WHERE id_member = ?")->execute([$id_member]);
 
-    header("Location: index.php?page=kasir&hapus=true");
+    header("Location: index.php?page=kasir");
     exit;
 }
 ?>

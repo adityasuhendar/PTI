@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 12, 2025 at 12:05 PM
+-- Generation Time: Apr 18, 2025 at 03:25 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -43,14 +43,6 @@ CREATE TABLE `barang` (
   `barcode_image_path` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
---
--- Dumping data for table `barang`
---
-
-INSERT INTO `barang` (`id`, `id_barang`, `barcode`, `id_kategori`, `nama_barang`, `merk`, `harga_beli`, `harga_jual`, `satuan_barang`, `stok`, `tgl_input`, `tgl_update`, `barcode_image_path`) VALUES
-(4, 'BR001', 'BC1744452043796', 8, 'Pulpen', 'Snowman', '1000', '2000', 'PCS', '101', '12 April 2025, 17:00', NULL, 'BC1744452043796.jpg'),
-(5, 'BR002', '123', 8, 'Pensil', 'Fabel Castel', '2000', '3000', 'PCS', '100', '12 April 2025, 17:04', NULL, '');
-
 -- --------------------------------------------------------
 
 --
@@ -89,8 +81,7 @@ CREATE TABLE `login` (
 --
 
 INSERT INTO `login` (`id_login`, `user`, `pass`, `id_member`, `role`) VALUES
-(1, 'admin', '202cb962ac59075b964b07152d234b70', 1, 'admin'),
-(2, 'kasir', '202cb962ac59075b964b07152d234b70', 2, 'kasir');
+(1, 'admin', '202cb962ac59075b964b07152d234b70', 1, 'admin');
 
 -- --------------------------------------------------------
 
@@ -113,8 +104,7 @@ CREATE TABLE `member` (
 --
 
 INSERT INTO `member` (`id_member`, `nm_member`, `alamat_member`, `telepon`, `email`, `gambar`, `NIK`) VALUES
-(1, 'Fauzan Falah', 'Ujung Harapan', '081234567890', 'admin@gmail.com', 'unnamed.jpg', '12314121'),
-(2, 'Kasir 1', 'Cikarang', '082112345678', 'kasir1@gmail.com', 'unnamed.jpg', '987654321');
+(1, 'Admin', 'Girimulyo', '081234567890', 'admin@gmail.com', 'unnamed.jpg', '12314121');
 
 -- --------------------------------------------------------
 
@@ -132,6 +122,13 @@ CREATE TABLE `nota` (
   `periode` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
 
+--
+-- Dumping data for table `nota`
+--
+
+INSERT INTO `nota` (`id_nota`, `id_barang`, `id_member`, `jumlah`, `total`, `tanggal_input`, `periode`) VALUES
+(1, 'BR004', 1, '1', '2000', '16 April 2025, 14:24', '04-2025');
+
 -- --------------------------------------------------------
 
 --
@@ -146,6 +143,13 @@ CREATE TABLE `penjualan` (
   `total` varchar(255) NOT NULL,
   `tanggal_input` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COLLATE=latin1_swedish_ci;
+
+--
+-- Dumping data for table `penjualan`
+--
+
+INSERT INTO `penjualan` (`id_penjualan`, `id_barang`, `id_member`, `jumlah`, `total`, `tanggal_input`) VALUES
+(1, 'BR004', 1, '1', '2000', '16 April 2025, 14:24');
 
 -- --------------------------------------------------------
 
@@ -166,7 +170,7 @@ CREATE TABLE `toko` (
 --
 
 INSERT INTO `toko` (`id_toko`, `nama_toko`, `alamat_toko`, `tlp`, `nama_pemilik`) VALUES
-(1, 'CV Daruttaqwa', 'Ujung Harapan', '081234567890', 'Fauzan Falah');
+(1, 'Java Mart', 'Girimulyo', '123', 'Edy Saputra');
 
 --
 -- Indexes for dumped tables
@@ -224,7 +228,7 @@ ALTER TABLE `toko`
 -- AUTO_INCREMENT for table `barang`
 --
 ALTER TABLE `barang`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `kategori`
@@ -236,25 +240,25 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT for table `login`
 --
 ALTER TABLE `login`
-  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_login` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `member`
 --
 ALTER TABLE `member`
-  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id_member` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `nota`
 --
 ALTER TABLE `nota`
-  MODIFY `id_nota` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_nota` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `penjualan`
 --
 ALTER TABLE `penjualan`
-  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_penjualan` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `toko`

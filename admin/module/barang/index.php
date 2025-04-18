@@ -116,7 +116,7 @@
                                     <!-- Tombol Download Barcode -->
                                     <?php if(!empty($isi['barcode_image_path'])) { ?>
                                         <!-- sesuaikan saat hosting -->
-                                        <a href="http://localhost/pos-kasir-php-master/assets/barcode_images/<?php echo $isi['barcode_image_path']; ?>" download="<?php echo basename($isi['barcode_image_path']); ?>">
+                                        <a href="http://localhost/PTI/assets/barcode_images/<?php echo $isi['barcode_image_path']; ?>" download="<?php echo basename($isi['barcode_image_path']); ?>">
                                             <button class="btn btn-success btn-xs">Download</button>
                                         </a>
                                     <?php } ?>
