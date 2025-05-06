@@ -1,4 +1,4 @@
-<h3>Dashboard</h3>
+<h3>MADANI</h3>
 <br/>
 <?php 
 	$sql=" select * from barang where stok <= 3";

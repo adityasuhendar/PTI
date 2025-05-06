@@ -1,64 +1,95 @@
 <?php 
-	@ob_start();
-	session_start();
-	if(!empty($_SESSION['admin'])){ }else{
-		echo '<script>window.location="login.php";</script>';
-        exit;
-	}
-	require 'config.php';
-	include $view;
-	$lihat = new view($config);
-	$toko = $lihat -> toko();
-	$hsl = $lihat -> penjualan();
+@ob_start();
+session_start();
+if (!empty($_SESSION['admin'])) { } else {
+    echo '<script>window.location="login.php";</script>';
+    exit;
+}
+require 'config.php';
+include $view;
+$lihat = new view($config);
+$toko = $lihat->toko();
+$hsl = $lihat->penjualan();
 ?>
+
+<!DOCTYPE html>
 <html>
-	<head>
-		<title>print</title>
-		<link rel="stylesheet" href="assets/css/bootstrap.css">
-	</head>
-	<body>
-		<script>window.print();</script>
-		<div class="container">
-			<div class="row">
-				<div class="col-sm-4"></div>
-				<div class="col-sm-4">
-					<center>
-						<p><?php echo $toko['nama_toko'];?></p>
-						<p><?php echo $toko['alamat_toko'];?></p>
-						<p>Tanggal : <?php  echo date("j F Y, G:i");?></p>
-						<p>Kasir : <?php  echo htmlentities($_GET['nm_member']);?></p>
-					</center>
-					<table class="table table-bordered" style="width:100%;">
-						<tr>
-							<td>No.</td>
-							<td>Barang</td>
-							<td>Jumlah</td>
-							<td>Total</td>
-						</tr>
-						<?php $no=1; foreach($hsl as $isi){?>
-						<tr>
-							<td><?php echo $no;?></td>
-							<td><?php echo $isi['nama_barang'];?></td>
-							<td><?php echo $isi['jumlah'];?></td>
-							<td><?php echo $isi['total'];?></td>
-						</tr>
-						<?php $no++; }?>
-					</table>
-					<div class="pull-right">
-						<?php $hasil = $lihat -> jumlah(); ?>
-						Total : Rp.<?php echo number_format($hasil['bayar']);?>,-
-						<br/>
-						Bayar : Rp.<?php echo number_format(htmlentities($_GET['bayar']));?>,-
-						<br/>
-						Kembali : Rp.<?php echo number_format(htmlentities($_GET['kembali']));?>,-
-					</div>
-					<div class="clearfix"></div>
-					<center>
-						<p>Terima Kasih Telah berbelanja di toko kami !</p>
-					</center>
-				</div>
-				<div class="col-sm-4"></div>
-			</div>
-		</div>
-	</body>
+<head>
+    <title>Struk Belanja</title>
+    <style>
+        body {
+            width: 80mm;
+            margin: 0 auto;
+            font-family: monospace;
+            font-size: 12px;
+        }
+        .center {
+            text-align: center;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .header, .footer {
+            margin-bottom: 10px;
+        }
+        .line {
+            border-top: 1px dashed #000;
+            margin: 5px 0;
+        }
+        td {
+            vertical-align: top;
+        }
+        .right {
+            text-align: right;
+        }
+        .total {
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body onload="window.print()">
+    <div class="center header">
+        <div><strong><?= $toko['nama_toko']; ?></strong></div>
+        <div><?= $toko['alamat_toko']; ?></div>
+        <div><?= date("j F Y, G:i"); ?></div>
+        <div>Kasir: <?= htmlentities($_GET['nm_member']); ?></div>
+    </div>
+
+    <div class="line"></div>
+    <table>
+        <?php $no = 1; foreach ($hsl as $isi): ?>
+        <tr>
+            <td colspan="2"><?= $isi['nama_barang']; ?></td>
+        </tr>
+        <tr>
+            <td><?= $isi['jumlah']; ?> x <?= number_format($isi['harga']); ?></td>
+            <td class="right">Rp<?= number_format($isi['total']); ?></td>
+        </tr>
+        <?php $no++; endforeach; ?>
+    </table>
+    <div class="line"></div>
+
+    <?php $hasil = $lihat->jumlah(); ?>
+    <table>
+        <tr>
+            <td>Total</td>
+            <td class="right">Rp<?= number_format($hasil['bayar']); ?></td>
+        </tr>
+        <tr>
+            <td>Bayar</td>
+            <td class="right">Rp<?= number_format(htmlentities($_GET['bayar'])); ?></td>
+        </tr>
+        <tr>
+            <td>Kembali</td>
+            <td class="right">Rp<?= number_format(htmlentities($_GET['kembali'])); ?></td>
+        </tr>
+    </table>
+
+    <div class="line"></div>
+    <div class="center footer">
+        Terima Kasih<br>
+        Telah berbelanja di toko kami
+    </div>
+</body>
 </html>

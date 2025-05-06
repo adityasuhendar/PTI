@@ -185,7 +185,7 @@
                                     <td>Kategori</td>
                                     <td>
                                         <select name="kategori" class="form-control" required>
-                                            <option value="#">Pilih Kategori</option>
+                                            <option value="">Pilih Kategori</option>
                                             <?php  $kat = $lihat -> kategori(); foreach($kat as $isi){ 	?>
                                             <option value="<?php echo $isi['id_kategori'];?>">
                                                 <?php echo $isi['nama_kategori'];?></option>

@@ -51,13 +51,29 @@ if (!empty($_SESSION['admin'])) {
         
         // // Menyimpan gambar barcode ke server
         // file_put_contents($barcodeImagePath, $barcodeImage);
-        if ($barcode_option == 'generate'){
-            $generator = (new Picqer\Barcode\Types\TypeCodabar())->getBarcode($barcode);
-            $renderer = new Picqer\Barcode\Renderers\JpgRenderer();
-            
-            $barcodeImagePath = $barcode.'.jpg';
-            file_put_contents('../../assets/barcode_images/'.$barcodeImagePath, $renderer->render($generator, $generator->getWidth() * 2));
+        if ($kategori == '') {
+            echo "<script>alert('Silakan pilih kategori terlebih dahulu.'); window.history.back();</script>";
+            exit;
         }
+
+        $cek_kategori = $config->prepare("SELECT COUNT(*) FROM kategori WHERE id_kategori = ?");
+        $cek_kategori->execute([$kategori]);
+        if ($cek_kategori->fetchColumn() == 0) {
+            echo "<script>alert('Kategori tidak ditemukan di database.'); window.history.back();</script>";
+            exit;
+}
+
+    if ($barcode_option == 'generate') {
+        // Misal $nama_barang sudah tersedia dari input form atau query
+        $nama_file = str_replace(' ', '_', strtolower($nama)) . '_' . $barcode . '.jpg';
+        
+        $generator = (new Picqer\Barcode\Types\TypeCodabar())->getBarcode($barcode);
+        $renderer = new Picqer\Barcode\Renderers\JpgRenderer();
+        
+        $barcodeImagePath = '../../assets/barcode_images/' . $nama_file;
+        file_put_contents($barcodeImagePath, $renderer->render($generator, $generator->getWidth() * 2));
+    }
+
         // Menyimpan data barang ke database, hanya menyimpan path gambar barcode
         $data[] = $id;
         $data[] = $barcode;
