@@ -67,11 +67,12 @@ if (!empty($_SESSION['admin'])) {
         // Misal $nama_barang sudah tersedia dari input form atau query
         $nama_file = str_replace(' ', '_', strtolower($nama)) . '_' . $barcode . '.jpg';
         
-        $generator = (new Picqer\Barcode\Types\TypeCodabar())->getBarcode($barcode);
+        // $generator = (new Picqer\Barcode\Types\TypeCodabar())->getBarcode($barcode);
+        $generator = (new Picqer\Barcode\Types\TypeCode128())->getBarcode($barcode);
         $renderer = new Picqer\Barcode\Renderers\JpgRenderer();
         
         $barcodeImagePath = '../../assets/barcode_images/' . $nama_file;
-        file_put_contents($barcodeImagePath, $renderer->render($generator, $generator->getWidth() * 2));
+        file_put_contents($barcodeImagePath, $renderer->render($generator, $generator->getWidth() * 1));
     }
 
         // Menyimpan data barang ke database, hanya menyimpan path gambar barcode

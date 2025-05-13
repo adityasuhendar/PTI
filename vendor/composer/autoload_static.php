@@ -11,12 +11,20 @@ class ComposerStaticInit906787304fff11015cfe879175918ee2
         array (
             'Picqer\\Barcode\\' => 15,
         ),
+        'M' => 
+        array (
+            'Mike42\\' => 7,
+        ),
     );
 
     public static $prefixDirsPsr4 = array (
         'Picqer\\Barcode\\' => 
         array (
             0 => __DIR__ . '/..' . '/picqer/php-barcode-generator/src',
+        ),
+        'Mike42\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/mike42/escpos-php/src/Mike42',
         ),
     );
 

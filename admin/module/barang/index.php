@@ -262,11 +262,13 @@
                 });
             } else if (this.value === 'generate') {
                 const generated = Date.now();
+                const shortGenerated = generated.toString().substring(0, 8);  // Mengambil 8 digit pertama
+
                 input.style.display = 'block';
                 input.required = true;
                 input.readOnly = true;
-                input.value = generated;
-                hidden.value = generated;
+                input.value = shortGenerated;
+                hidden.value = shortGenerated;       
             } else {
                 input.style.display = 'none';
                 input.required = false;
@@ -275,4 +277,3 @@
             }
         });
 </script>
-
